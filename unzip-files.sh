@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-DEVICE=galaxysmtd
+DEVICE=fascinatemtd
 MANUFACTURER=samsung
 
 ####################################
@@ -169,7 +169,7 @@ PRODUCT_COPY_FILES += \\
 EOF
 
 ####################################
-# galaxys
+# fascinate
 #
 
     mkdir -p ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
@@ -197,7 +197,7 @@ EOF
 PRODUCT_COPY_FILES := \\
     vendor/$MANUFACTURER/$DEVICE/proprietary/libcamera.so:obj/lib/libcamera.so
 
-# All the blobs necessary for galaxys
+# All the blobs necessary for fascinate
 PRODUCT_COPY_FILES += \\
     vendor/$MANUFACTURER/$DEVICE/proprietary/libcamera.so:system/lib/libcamera.so
 EOF
