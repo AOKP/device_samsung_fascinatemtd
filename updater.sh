@@ -14,8 +14,8 @@ if /tmp/busybox test -e /dev/block/bml7 ; then
 	# make sure sdcard is mounted
 	if ! /tmp/busybox grep -q /mnt/sdcard /proc/mounts ; then
 		/tmp/busybox mkdir -p /mnt/sdcard
-		/tmp/busybox umount -l /dev/block/mmcblk0p1
-    		if ! /tmp/busybox mount -t vfat /dev/block/mmcblk0p1 /mnt/sdcard ; then
+		/tmp/busybox umount -l /dev/block/mmcblk1p1
+    		if ! /tmp/busybox mount -t vfat /dev/block/mmcblk1p1 /mnt/sdcard ; then
 	      		/tmp/busybox echo "Cannot mount sdcard."
       		        exit 1
     		fi
@@ -28,19 +28,19 @@ if /tmp/busybox test -e /dev/block/bml7 ; then
 	exec >> /mnt/sdcard/cyanogenmod_bml.log 2>&1
 
 	# make sure efs is mounted
-	if ! /tmp/busybox grep -q /efs /proc/mounts ; then
-		/tmp/busybox mkdir -p /efs
-		/tmp/busybox umount -l /dev/block/stl3
-    		if ! /tmp/busybox mount -t rfs /dev/block/stl3 /efs ; then
-	      		/tmp/busybox echo "Cannot mount efs."
-      		        exit 1
-    		fi
-  	fi
+	#if ! /tmp/busybox grep -q /efs /proc/mounts ; then
+	#	/tmp/busybox mkdir -p /efs
+	#	/tmp/busybox umount -l /dev/block/stl3
+    	#	if ! /tmp/busybox mount -t rfs /dev/block/stl3 /efs ; then
+	#      		/tmp/busybox echo "Cannot mount efs."
+      	#	        exit 1
+    	#	fi
+  	#fi
 
 	# create a backup of efs
-	/tmp/busybox rm -rf /mnt/sdcard/backup/efs
-	/tmp/busybox mkdir -p /mnt/sdcard/backup/efs
-	/tmp/busybox cp -R /efs/ /mnt/sdcard/backup
+	#/tmp/busybox rm -rf /mnt/sdcard/backup/efs
+	#/tmp/busybox mkdir -p /mnt/sdcard/backup/efs
+	#/tmp/busybox cp -R /efs/ /mnt/sdcard/backup
 
 	# write the package path to sdcard cyanogenmod.cfg
 	if /tmp/busybox test -n "$UPDATE_PACKAGE" ; then
@@ -65,8 +65,8 @@ elif busybox test -e /dev/block/mtdblock0 ; then
 	/tmp/busybox mkdir -p /sdcard
 	
 	if ! /tmp/busybox grep -q /sdcard /proc/mounts ; then
-		/tmp/busybox umount -l /dev/block/mmcblk0p1
-    		if ! /tmp/busybox mount -t vfat /dev/block/mmcblk0p1 /sdcard ; then
+		/tmp/busybox umount -l /dev/block/mmcblk1p1
+    		if ! /tmp/busybox mount -t vfat /dev/block/mmcblk1p1 /sdcard ; then
 	      		/tmp/busybox echo "Cannot mount sdcard."
       		exit 1
     		fi
@@ -94,24 +94,24 @@ elif busybox test -e /dev/block/mtdblock0 ; then
 		/tmp/flash_image radio /tmp/modem.bin
 
 		# restore efs backup
-		if /tmp/busybox test -e /sdcard/backup/efs/nv_data.bin ; then
-			/tmp/busybox umount -l /efs
-			/tmp/erase_image efs
-			/tmp/busybox mkdir -p /efs
+		#if /tmp/busybox test -e /sdcard/backup/efs/nv_data.bin ; then
+		#	/tmp/busybox umount -l /efs
+		#	/tmp/erase_image efs
+		#	/tmp/busybox mkdir -p /efs
 	
-			if ! /tmp/busybox grep -q /efs /proc/mounts ; then
-    				if ! /tmp/busybox mount -t yaffs2 /dev/block/mtdblock4 /efs ; then
-	      				/tmp/busybox echo "Cannot mount efs."
-      					exit 1
-    				fi
-  			fi
+		#	if ! /tmp/busybox grep -q /efs /proc/mounts ; then
+    		#		if ! /tmp/busybox mount -t yaffs2 /dev/block/mtdblock4 /efs ; then
+	      	#			/tmp/busybox echo "Cannot mount efs."
+      		#			exit 1
+    		#		fi
+  		#	fi
 
-			/tmp/busybox cp -R /sdcard/backup/efs /
-			/tmp/busybox umount -l /efs
-		else
-			/tmp/busybox echo "Cannot restore efs."
-			exit 1
-		fi
+		#	/tmp/busybox cp -R /sdcard/backup/efs /
+		#	/tmp/busybox umount -l /efs
+		#else
+		#	/tmp/busybox echo "Cannot restore efs."
+		#	exit 1
+		#fi
 
 		# we've finished conversion, remove cyanogenmod.cfg
 		/tmp/busybox rm -f /sdcard/cyanogenmod.cfg

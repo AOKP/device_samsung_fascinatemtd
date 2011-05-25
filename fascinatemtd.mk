@@ -104,7 +104,7 @@ PRODUCT_COPY_FILES += \
 	frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
 	frameworks/base/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
 	frameworks/base/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
-	frameworks/base/data/etc/android.hardware.telephony.gsm.xml:system/etc/permissions/android.hardware.telephony.gsm.xml \
+	frameworks/base/data/etc/android.hardware.telephony.cdma.xml:system/etc/permissions/android.hardware.telephony.cdma.xml \
         frameworks/base/data/etc/android.hardware.location.xml:system/etc/permissions/android.hardware.location.xml \
 	frameworks/base/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
 	frameworks/base/data/etc/android.hardware.wifi.xml:system/etc/permissions/android.hardware.wifi.xml \
@@ -118,6 +118,26 @@ PRODUCT_COPY_FILES += \
 # This is a 16.16 fixed point number
 PRODUCT_PROPERTY_OVERRIDES := \
     ro.opengles.version=131072
+
+# Verizon cdma stuff
+PRODUCT_PROPERTY_OVERRIDES += \
+       ro.telephony.default_network=4 \
+       ro.ril.def.agps.mode=2 \
+       ro.cdma.home.operator.numeric=310004 \
+       ro.cdma.home.operator.alpha=Verizon \
+       ro.cdma.homesystem=64,65,76,77,78,79,80,81,82,83 \
+       ro.cdma.data_retry_config=default_randomization=2000,0,0,120000,180000,540000,960000 \
+       ro.config.vc_call_vol_steps=15 \
+       ro.cdma.otaspnumschema=SELC,1,80,99 \
+       ro.telephony.call_ring.multiple=false \
+       ro.telephony.call_ring.delay=3000 \
+       ro.telephony.call_ring.absent=true \
+       net.cdma.pppd.authtype=require-chap \
+       net.cdma.pppd.user=user[SPACE]VerizonWireless \
+       net.cdma.datalinkinterface=/dev/ttyCDMA0 \
+       net.cdma.ppp.interface=ppp0 \
+       net.connectivity.type=CDMA1 \
+       net.interfaces.defaultroute=cdma
 
 # These are the hardware-specific settings that are stored in system properties.
 # Note that the only such settings should be the ones that are too low-level to
