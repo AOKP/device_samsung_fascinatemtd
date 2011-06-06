@@ -191,10 +191,10 @@ service pvrsrvinit /system/vendor/bin/pvrsrvinit
     group root
     oneshot
 
-service gpsd /system/vendor/bin/gpsd -c /vendor/etc/gps.xml
-    socket gps seqpacket 0660 gps system
-    user gps
-    group system inet
+#service gpsd /system/vendor/bin/gpsd -c /vendor/etc/gps.xml
+#    socket gps seqpacket 0660 gps system
+#    user gps
+#    group system inet
 
 service wpa_supplicant /system/bin/wpa_supplicant -Dwext -ieth0 -c/data/misc/wifi/wpa_supplicant.conf
     socket wpa_eth0 dgram 0660 wifi wifi
@@ -242,6 +242,12 @@ service ril-daemon /system/bin/rild
     socket rild-debug stream 660 radio system
     user root
     group radio cache inet misc audio sdcard_rw net_admin net_raw
+
+service pppd_cdma /system/bin/pppd_runner
+    user root
+    group radio cache inet misc system
+    disabled
+    oneshot
 
 service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
     socket zygote stream 666
@@ -345,3 +351,12 @@ service console /system/bin/sh
 
 on property:ro.secure=0
     start console
+
+on property:ril.cdma.data_ready=true
+    setprop net.dns1 8.8.8.8
+    setprop net.dns2 8.8.4.4
+    start pppd_cdma
+
+on property:ril.cdma.data_ready=false
+    stop pppd_cdma
+
