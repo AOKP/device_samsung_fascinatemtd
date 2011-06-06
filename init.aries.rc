@@ -325,13 +325,13 @@ service dumpstate /system/bin/dumpstate -s
     disabled
     oneshot
 
-service orientationd /system/vendor/bin/orientationd
-    user compass
-    group system input
+#service orientationd /system/vendor/bin/orientationd
+#    user compass
+#    group system input
 
-service geomagneticd /system/vendor/bin/geomagneticd
-    user compass
-    group system input
+#service geomagneticd /system/vendor/bin/geomagneticd
+#    user compass
+#    group system input
 
 service tvout /system/bin/tvoutserver
     user system
