@@ -43,6 +43,13 @@ on boot
     chown compass input /sys/class/input/input3/shape
     chown compass input /sys/class/input/input3/distortion
     chown compass input /sys/class/input/input3/threshold
+
+# magnetic sensor yamaha
+    chown compass system /dev/i2c-12
+    chmod 0777 /dev/i2c-12
+    chown compass system /dev/i2c-5
+    chmod 0777 /dev/i2c-5
+
 # create data/gps for GPS demon
     mkdir /data/gps 771 system system
     chown system /data/gps
@@ -218,6 +225,10 @@ service servicemanager /system/bin/servicemanager
     onrestart restart zygote
     onrestart restart media
 
+
+#magnetic sensor yamaha
+    onrestart restart sensor-daemon
+
 service vold /system/bin/vold
     socket vold stream 0660 root mount
     ioprio be 2
@@ -296,6 +307,11 @@ service pbap /system/bin/sdptool add --channel=19 PBAP
 
 service installd /system/bin/installd
     socket installd stream 600 system system
+
+#magnetic sensor yamaha
+service sensor-daemon /system/bin/sensorserver_yamaha
+    user root
+    group system log
 
 service racoon /system/bin/racoon
     socket racoon stream 600 system system
