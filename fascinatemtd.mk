@@ -87,8 +87,7 @@ PRODUCT_PACKAGES += \
 # Misc other modules
 PRODUCT_PACKAGES += \
 	lights.aries \
-	overlay.aries \
-	gps.aries
+	overlay.aries
 
 # Libs
 PRODUCT_PACKAGES += \

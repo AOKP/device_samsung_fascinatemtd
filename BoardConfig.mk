@@ -51,9 +51,6 @@ ifeq ($(USE_CAMERA_STUB),false)
 BOARD_CAMERA_LIBRARIES := libcamera
 endif
 
-#GPS
-BOARD_USES_GPSSHIM := true
-
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
 BOARD_HAVE_BLUETOOTH_BCM := true
