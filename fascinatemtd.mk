@@ -42,21 +42,21 @@ DEVICE_PACKAGE_OVERLAYS := device/samsung/fascinatemtd/overlay
 
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES := \
-	device/samsung/fascinatemtd/asound.conf:system/etc/asound.conf \
+	device/samsung/aries-common/asound.conf:system/etc/asound.conf \
 	device/samsung/fascinatemtd/vold.fstab:system/etc/vold.fstab \
-	device/samsung/fascinatemtd/egl.cfg:system/lib/egl/egl.cfg
+	device/samsung/aries-common/egl.cfg:system/lib/egl/egl.cfg
 
 # Init files
 PRODUCT_COPY_FILES += \
-	device/samsung/fascinatemtd/init.rc:root/init.rc \
+	device/samsung/aries-common/init.rc:root/init.rc \
 	device/samsung/fascinatemtd/init.aries.rc:root/init.aries.rc \
 	device/samsung/fascinatemtd/ueventd.aries.rc:root/ueventd.aries.rc \
-	device/samsung/fascinatemtd/setupenv.sh:recovery/root/sbin/setupenv.sh
+	device/samsung/aries-common/setupenv.sh:recovery/root/sbin/setupenv.sh
 
 
 # Prebuilt kl keymaps
 PRODUCT_COPY_FILES += \
-	device/samsung/fascinatemtd/cypress-touchkey.kl:system/usr/keylayout/cypress-touchkey.kl \
+	device/samsung/aries-common/cypress-touchkey.kl:system/usr/keylayout/cypress-touchkey.kl \
 	device/samsung/fascinatemtd/sec_jack.kl:system/usr/keylayout/sec_jack.kl \
 	device/samsung/fascinatemtd/aries-keypad.kl:system/usr/keylayout/aries-keypad.kl \
 	device/samsung/fascinatemtd/s3c-keypad.kl:system/usr/keylayout/s3c-keypad.kl
@@ -74,7 +74,7 @@ PRODUCT_PACKAGES += \
 # These are the OpenMAX IL configuration files
 PRODUCT_COPY_FILES += \
 	device/samsung/aries-common/sec_mm/sec_omx/sec_omx_core/secomxregistry:system/etc/secomxregistry \
-	device/samsung/fascinatemtd/media_profiles.xml:system/etc/media_profiles.xml
+	device/samsung/aries-common/media_profiles.xml:system/etc/media_profiles.xml
 
 # These are the OpenMAX IL modules
 PRODUCT_PACKAGES += \
@@ -122,6 +122,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
 PRODUCT_PROPERTY_OVERRIDES += \
        ro.telephony.default_network=4 \
        ro.ril.def.agps.mode=2 \
+       ro.ril.samsung_cdma=true \
        ro.cdma.home.operator.numeric=310004 \
        ro.cdma.home.operator.alpha=Verizon \
        ro.cdma.homesystem=64,65,76,77,78,79,80,81,82,83 \
