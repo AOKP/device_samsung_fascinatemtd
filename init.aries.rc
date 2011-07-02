@@ -356,7 +356,8 @@ on property:ril.cdma.data_ready=true
 on property:ril.cdma.data_ready=false
     stop pppd_cdma
 
-service gps-daemon /system/vendor/bin/gpsd
-    user system
+service gps-daemon /system/vendor/bin/gpsd -c /vendor/etc/gps.xml
+    socket gps seqpacket 0660 gps system
+    user gps
     group system inet
 
