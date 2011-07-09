@@ -549,7 +549,7 @@ status_t AudioHardware::setIncallPath_l(uint32_t device)
             TRACE_DRIVER_OUT
             //trying to fix input router
             if (router == (const char *)"SPK" || router == (const char *)"RCV") {
-                struct mixer_ctl *ctlMic = mixer_get_control(mMixer, "MIC Path", 0);
+                struct mixer_ctl *ctlMic = mixer_get_control(mMixer, "Capture MIC Path", 0);
                 if (ctlMic != NULL ) {
                     // First set Mic Path to suitable path
                     TRACE_DRIVER_IN(DRV_MIXER_SEL)
@@ -1276,7 +1276,7 @@ status_t AudioHardware::AudioStreamInALSA::open_l()
     mMixer = mHardware->openMixer_l();
     if (mMixer) {
         TRACE_DRIVER_IN(DRV_MIXER_GET)
-        mRouteCtl = mixer_get_control(mMixer, "MIC Path", 0);
+        mRouteCtl = mixer_get_control(mMixer, "Capture MIC Path", 0);
         TRACE_DRIVER_OUT
     }
 
