@@ -182,4 +182,38 @@
     <!-- Boolean indicating if restoring network selection should be skipped -->
     <!-- The restoring is handled by modem if it is true -->
     <bool translatable="false" name="skip_restoring_network_selection">true</bool>
+
+    <!-- The number of degrees to rotate the display when the device is in a desk dock.
+         A value of -1 means no change in orientation by default. -->
+    <integer name="config_deskDockRotation">90</integer>
+
+    <!-- The number of degrees to rotate the display when the device is in a car dock.
+         A value of -1 means no change in orientation by default. -->
+    <integer name="config_carDockRotation">-1</integer>
+
+    <!-- Control whether being in the desk dock (and powered) always
+         keeps the screen on.  By default it stays on when plugged in to
+         AC.  0 will not keep it on; or together 1 to stay on when plugged
+         in to AC and 2 to stay on when plugged in to USB.  (So 3 for both.) -->
+    <integer name="config_deskDockKeepsScreenOn">0</integer>
+
+    <!-- Control whether being in the car dock (and powered) always
+         keeps the screen on.  By default it stays on when plugged in to
+         AC.  0 will not keep it on; or together 1 to stay on when plugged
+         in to AC and 2 to stay on when plugged in to USB.  (So 3 for both.) -->
+    <integer name="config_carDockKeepsScreenOn">1</integer>
+
+    <!-- Control whether being in the desk dock should enable accelerometer
+         based screen orientation.  Note this should probably default to true
+         like car dock, but we haven't had a chance to test it. -->
+    <bool name="config_deskDockEnablesAccelerometer">false</bool>
+
+    <!-- Control whether being in the car dock should enable accelerometer based
+         screen orientation.  This defaults to true because putting a device in
+         a car dock make the accelerometer more a physical input (like a lid). -->
+    <bool name="config_carDockEnablesAccelerometer">true</bool>
+
+    <!-- Indicate whether the SD card is accessible without removing the battery. -->
+    <bool name="config_batterySdCardAccessibility">true</bool>
+
 </resources>
