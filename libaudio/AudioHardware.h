@@ -24,6 +24,7 @@
 #include <utils/SortedVector.h>
 
 #include <hardware_legacy/AudioHardwareBase.h>
+#include <media/mediarecorder.h>
 
 //#include "secril-client.h"
 
@@ -75,6 +76,12 @@ class AudioHardware : public AudioHardwareBase
     class AudioStreamInALSA;
 public:
 
+    // input path names used to translate from input sources to driver paths
+    static const char *inputPathNameDefault;
+    static const char *inputPathNameCamcorder;
+    static const char *inputPathNameVoiceRecognition;
+    static const char *inputPathNameVoiceCommunication;
+
     AudioHardware();
     virtual ~AudioHardware();
     virtual status_t initCheck();
@@ -114,7 +121,7 @@ public:
             status_t setIncallPath_l(uint32_t device);
             status_t setVoiceMemoPath_l(String8 path);
 
-//            status_t setInputSource_l(String8 source);
+            status_t setInputSource_l(audio_source source);
 
     static uint32_t    getInputSampleRate(uint32_t sampleRate);
            sp <AudioStreamInALSA> getActiveInput_l();
@@ -145,7 +152,7 @@ private:
     uint32_t        mMixerOpenCnt;
     bool            mInCallAudioMode;
 
-    String8         mInputSource;
+    audio_source    mInputSource;
     bool            mBluetoothNrec;
 /*
     void*           mSecRilLibHandle;
@@ -207,8 +214,9 @@ private:
                 status_t open_l();
                 int standbyCnt() { return mStandbyCnt; }
 
-                void lock() { mLock.lock(); }
-                void unlock() { mLock.unlock(); }
+                int prepareLock();
+                void lock();
+                void unlock();
 
     private:
 
@@ -226,6 +234,7 @@ private:
         //  trace driver operations for dump
         int mDriverOp;
         int mStandbyCnt;
+        bool mSleepReq;
     };
 
     class DownSampler;
@@ -320,8 +329,9 @@ private:
         virtual status_t getNextBuffer(BufferProvider::Buffer* buffer);
         virtual void releaseBuffer(BufferProvider::Buffer* buffer);
 
-        void lock() { mLock.lock(); }
-        void unlock() { mLock.unlock(); }
+        int prepareLock();
+        void lock();
+        void unlock();
 
     private:
         Mutex mLock;
@@ -343,6 +353,7 @@ private:
         //  trace driver operations for dump
         int mDriverOp;
         int mStandbyCnt;
+        bool mSleepReq;
     };
 
 };

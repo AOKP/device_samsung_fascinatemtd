@@ -73,6 +73,11 @@ enum {
 
 // ----------------------------------------------------------------------------
 
+const char *AudioHardware::inputPathNameDefault = "Default";
+const char *AudioHardware::inputPathNameCamcorder = "Camcorder";
+const char *AudioHardware::inputPathNameVoiceRecognition = "Voice Recognition";
+const char *AudioHardware::inputPathNameVoiceCommunication = "Voice Communication";
+
 AudioHardware::AudioHardware() :
     mInit(false),
     mMicMute(false),
@@ -81,7 +86,7 @@ AudioHardware::AudioHardware() :
     mPcmOpenCnt(0),
     mMixerOpenCnt(0),
     mInCallAudioMode(false),
-    mInputSource("Default"),
+    mInputSource(AUDIO_SOURCE_DEFAULT),
     mBluetoothNrec(true),
     mDriverOp(DRV_NONE)
 {
@@ -231,17 +236,13 @@ status_t AudioHardware::setMode(int mode)
     sp<AudioStreamInALSA> spIn;
     status_t status;
 
-    // bump thread priority to speed up mutex acquisition
-    int  priority = getpriority(PRIO_PROCESS, 0);
-    setpriority(PRIO_PROCESS, 0, ANDROID_PRIORITY_URGENT_AUDIO);
-
     // Mutex acquisition order is always out -> in -> hw
     AutoMutex lock(mLock);
 
     spOut = mOutput;
     while (spOut != 0) {
         if (!spOut->checkStandby()) {
-            int cnt = spOut->standbyCnt();
+            int cnt = spOut->prepareLock();
             mLock.unlock();
             spOut->lock();
             mLock.lock();
@@ -260,7 +261,7 @@ status_t AudioHardware::setMode(int mode)
 
     spIn = getActiveInput_l();
     while (spIn != 0) {
-        int cnt = spIn->standbyCnt();
+        int cnt = spIn->prepareLock();
         mLock.unlock();
         spIn->lock();
         mLock.lock();
@@ -273,8 +274,6 @@ status_t AudioHardware::setMode(int mode)
         spIn = getActiveInput_l();
     }
     // spIn is not 0 here only if the input is active
-
-    setpriority(PRIO_PROCESS, 0, priority);
 
     int prevMode = mMode;
     status = AudioHardwareBase::setMode(mode);
@@ -293,9 +292,11 @@ status_t AudioHardware::setMode(int mode)
             LOGV("setMode() openPcmOut_l()");
             openPcmOut_l();
             openMixer_l();
+            setInputSource_l(AUDIO_SOURCE_DEFAULT);
             mInCallAudioMode = true;
         }
         if (mMode == AudioSystem::MODE_NORMAL && mInCallAudioMode) {
+            setInputSource_l(mInputSource);
             if (mMixer != NULL) {
                 TRACE_DRIVER_IN(DRV_MIXER_GET)
                 struct mixer_ctl *ctl= mixer_get_control(mMixer, "Playback Path", 0);
@@ -518,7 +519,7 @@ status_t AudioHardware::dump(int fd, const Vector<String16>& args)
     snprintf(buffer, SIZE, "\tIn Call Audio Mode %s\n",
              (mInCallAudioMode) ? "ON" : "OFF");
     result.append(buffer);
-    snprintf(buffer, SIZE, "\tInput source %s\n", mInputSource.string());
+    snprintf(buffer, SIZE, "\tInput source %s\n", mInputSource);
     result.append(buffer);
     snprintf(buffer, SIZE, "\tmDriverOp: %d\n", mDriverOp);
     result.append(buffer);
@@ -556,16 +557,6 @@ status_t AudioHardware::setIncallPath_l(uint32_t device)
             TRACE_DRIVER_IN(DRV_MIXER_SEL)
             mixer_ctl_select(ctl,router);
             TRACE_DRIVER_OUT
-            //trying to fix input router
-            if (router == (const char *)"SPK" || router == (const char *)"RCV" || router == (const char *)"HP") {
-                struct mixer_ctl *ctlMic = mixer_get_control(mMixer, "Capture MIC Path", 0);
-                if (ctlMic != NULL ) {
-                    // First set Mic Path to suitable path
-                    TRACE_DRIVER_IN(DRV_MIXER_SEL)
-                    mixer_ctl_select(ctlMic , getInputRouteFromDevice(device));
-                    TRACE_DRIVER_OUT
-                }
-            }
         }
     }
     return NO_ERROR;
@@ -748,6 +739,51 @@ sp <AudioHardware::AudioStreamInALSA> AudioHardware::getActiveInput_l()
     return spIn;
 }
 
+status_t AudioHardware::setInputSource_l(audio_source source)
+{
+     LOGV("setInputSource_l(%d)", source);
+     if (source != mInputSource) {
+         if ((source == AUDIO_SOURCE_DEFAULT) || (mMode != AudioSystem::MODE_IN_CALL)) {
+             if (mMixer) {
+                 TRACE_DRIVER_IN(DRV_MIXER_GET)
+                 struct mixer_ctl *ctl= mixer_get_control(mMixer, "Input Source", 0);
+                 TRACE_DRIVER_OUT
+                 if (ctl == NULL) {
+                     return NO_INIT;
+                 }
+                 const char* sourceName;
+                 switch (source) {
+                     case AUDIO_SOURCE_DEFAULT: // intended fall-through
+                     case AUDIO_SOURCE_MIC:
+                         sourceName = inputPathNameDefault;
+                         break;
+                     case AUDIO_SOURCE_VOICE_COMMUNICATION:
+                         sourceName = inputPathNameVoiceCommunication;
+                         break;
+                     case AUDIO_SOURCE_CAMCORDER:
+                         sourceName = inputPathNameCamcorder;
+                         break;
+                     case AUDIO_SOURCE_VOICE_RECOGNITION:
+                         sourceName = inputPathNameVoiceRecognition;
+                         break;
+                     case AUDIO_SOURCE_VOICE_UPLINK:   // intended fall-through
+                     case AUDIO_SOURCE_VOICE_DOWNLINK: // intended fall-through
+                     case AUDIO_SOURCE_VOICE_CALL:     // intended fall-through
+                     default:
+                         return NO_INIT;
+                 }
+                 LOGV("mixer_ctl_select, Input Source, (%s)", sourceName);
+                 TRACE_DRIVER_IN(DRV_MIXER_SEL)
+                 mixer_ctl_select(ctl, sourceName);
+                 TRACE_DRIVER_OUT
+             }
+         }
+         mInputSource = source;
+     }
+
+     return NO_ERROR;
+}
+
 //------------------------------------------------------------------------------
 //  AudioStreamOutALSA
 //------------------------------------------------------------------------------
@@ -756,7 +792,7 @@ AudioHardware::AudioStreamOutALSA::AudioStreamOutALSA() :
     mHardware(0), mPcm(0), mMixer(0), mRouteCtl(0),
     mStandby(true), mDevices(0), mChannels(AUDIO_HW_OUT_CHANNELS),
     mSampleRate(AUDIO_HW_OUT_SAMPLERATE), mBufferSize(AUDIO_HW_OUT_PERIOD_BYTES),
-    mDriverOp(DRV_NONE), mStandbyCnt(0)
+    mDriverOp(DRV_NONE), mStandbyCnt(0), mSleepReq(false)
 {
 }
 
@@ -811,6 +847,12 @@ ssize_t AudioHardware::AudioStreamOutALSA::write(const void* buffer, size_t byte
 
     if (mHardware == NULL) return NO_INIT;
 
+    if (mSleepReq) {
+        // 10ms are always shorter than the time to reconfigure the audio path
+        // which is the only condition when mSleepReq would be true.
+        usleep(10000);
+    }
+
     { // scope for the lock
 
         AutoMutex lock(mLock);
@@ -823,7 +865,7 @@ ssize_t AudioHardware::AudioStreamOutALSA::write(const void* buffer, size_t byte
 
             sp<AudioStreamInALSA> spIn = mHardware->getActiveInput_l();
             while (spIn != 0) {
-                int cnt = spIn->standbyCnt();
+                int cnt = spIn->prepareLock();
                 mHardware->lock().unlock();
                 // Mutex acquisition order is always out -> in -> hw
                 spIn->lock();
@@ -1004,6 +1046,7 @@ status_t AudioHardware::AudioStreamOutALSA::setParameters(const String8& keyValu
 
         if (param.getInt(String8(AudioParameter::keyRouting), device) == NO_ERROR)
         {
+        if (device != 0) {
             AutoMutex hwLock(mHardware->lock());
 
             if (mDevices != (uint32_t)device) {
@@ -1015,6 +1058,7 @@ status_t AudioHardware::AudioStreamOutALSA::setParameters(const String8& keyValu
             if (mHardware->mode() == AudioSystem::MODE_IN_CALL) {
                 mHardware->setIncallPath_l(device);
             }
+        }
             param.remove(String8(AudioParameter::keyRouting));
         }
     }
@@ -1048,6 +1092,24 @@ status_t AudioHardware::AudioStreamOutALSA::getRenderPosition(uint32_t *dspFrame
     return INVALID_OPERATION;
 }
 
+int AudioHardware::AudioStreamOutALSA::prepareLock()
+{
+    // request sleep next time write() is called so that caller can acquire
+    // mLock
+    mSleepReq = true;
+    return mStandbyCnt;
+}
+
+void AudioHardware::AudioStreamOutALSA::lock()
+{
+    mLock.lock();
+    mSleepReq = false;
+}
+
+void AudioHardware::AudioStreamOutALSA::unlock() {
+    mLock.unlock();
+}
+
 //------------------------------------------------------------------------------
 //  AudioStreamInALSA
 //------------------------------------------------------------------------------
@@ -1057,7 +1119,7 @@ AudioHardware::AudioStreamInALSA::AudioStreamInALSA() :
     mStandby(true), mDevices(0), mChannels(AUDIO_HW_IN_CHANNELS), mChannelCount(1),
     mSampleRate(AUDIO_HW_IN_SAMPLERATE), mBufferSize(AUDIO_HW_IN_PERIOD_BYTES),
     mDownSampler(NULL), mReadStatus(NO_ERROR), mDriverOp(DRV_NONE),
-    mStandbyCnt(0)
+    mStandbyCnt(0), mSleepReq(false)
 {
 }
 
@@ -1129,6 +1191,12 @@ ssize_t AudioHardware::AudioStreamInALSA::read(void* buffer, ssize_t bytes)
 
     if (mHardware == NULL) return NO_INIT;
 
+    if (mSleepReq) {
+        // 10ms are always shorter than the time to reconfigure the audio path
+        // which is the only condition when mSleepReq would be true.
+        usleep(10000);
+    }
+
     { // scope for the lock
         AutoMutex lock(mLock);
 
@@ -1141,7 +1209,7 @@ ssize_t AudioHardware::AudioStreamInALSA::read(void* buffer, ssize_t bytes)
             sp<AudioStreamOutALSA> spOut = mHardware->output();
             while (spOut != 0) {
                 if (!spOut->checkStandby()) {
-                    int cnt = spOut->standbyCnt();
+                    int cnt = spOut->prepareLock();
                     mHardware->lock().unlock();
                     mLock.unlock();
                     // Mutex acquisition order is always out -> in -> hw
@@ -1360,6 +1428,17 @@ status_t AudioHardware::AudioStreamInALSA::setParameters(const String8& keyValue
 
     {
         AutoMutex lock(mLock);
+
+        if (param.getInt(String8(AudioParameter::keyInputSource), value) == NO_ERROR) {
+            AutoMutex hwLock(mHardware->lock());
+
+            mHardware->openMixer_l();
+            mHardware->setInputSource_l((audio_source)value);
+            mHardware->closeMixer_l();
+
+            param.remove(String8(AudioParameter::keyInputSource));
+        }
+
         if (param.getInt(String8(AudioParameter::keyRouting), value) == NO_ERROR)
         {
             if (value != 0) {
@@ -1451,6 +1530,24 @@ size_t AudioHardware::AudioStreamInALSA::getBufferSize(uint32_t sampleRate, int 
     }
 
     return (AUDIO_HW_IN_PERIOD_SZ*channelCount*sizeof(int16_t)) / ratio ;
+}
+
+int AudioHardware::AudioStreamInALSA::prepareLock()
+{
+    // request sleep next time read() is called so that caller can acquire
+    // mLock
+    mSleepReq = true;
+    return mStandbyCnt;
+}
+
+void AudioHardware::AudioStreamInALSA::lock()
+{
+    mLock.lock();
+    mSleepReq = false;
+}
+
+void AudioHardware::AudioStreamInALSA::unlock() {
+    mLock.unlock();
 }
 
 //------------------------------------------------------------------------------
@@ -1589,15 +1686,15 @@ void resample_441_320(int16_t* input, int16_t* output, int* num_samples_in, int*
         }
 
         const float step_float = (float)RESAMPLE_16KHZ_SAMPLES_IN / (float)RESAMPLE_16KHZ_SAMPLES_OUT;
+        const uint32_t step = (uint32_t)(step_float * 32768.0f + 0.5f);  // 17.15 fixed point
 
-        uint32_t in_sample_num = 0;   // 16.16 fixed point
-        const uint32_t step = (uint32_t)(step_float * 65536.0f + 0.5f);  // 16.16 fixed point
+        uint32_t in_sample_num = 0;   // 17.15 fixed point
         for (int j = 0; j < RESAMPLE_16KHZ_SAMPLES_OUT; ++j, in_sample_num += step) {
-            const uint32_t whole = in_sample_num >> 16;
-            const uint32_t frac = (in_sample_num & 0xffff);  // 0.16 fixed point
+            const uint32_t whole = in_sample_num >> 15;
+            const uint32_t frac = (in_sample_num & 0x7fff);  // 0.15 fixed point
             const int32_t s1 = tmp[whole];
             const int32_t s2 = tmp[whole + 1];
-            *output++ = clip(s1 + (((s2 - s1) * (int32_t)frac) >> 16));
+            *output++ = clip(s1 + (((s2 - s1) * (int32_t)frac) >> 15));
         }
     }
 
