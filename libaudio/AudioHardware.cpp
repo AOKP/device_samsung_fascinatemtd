@@ -49,7 +49,7 @@ const uint32_t AudioHardware::inputSamplingRates[] = {
 
 //  trace driver operations for dump
 //
-//#define DRIVER_TRACE
+#define DRIVER_TRACE
 
 enum {
     DRV_NONE,
@@ -519,7 +519,7 @@ status_t AudioHardware::dump(int fd, const Vector<String16>& args)
     snprintf(buffer, SIZE, "\tIn Call Audio Mode %s\n",
              (mInCallAudioMode) ? "ON" : "OFF");
     result.append(buffer);
-    snprintf(buffer, SIZE, "\tInput source %s\n", mInputSource);
+    snprintf(buffer, SIZE, "\tInput source %d\n", mInputSource);
     result.append(buffer);
     snprintf(buffer, SIZE, "\tmDriverOp: %d\n", mDriverOp);
     result.append(buffer);
@@ -696,6 +696,7 @@ const char *AudioHardware::getInputRouteFromDevice(uint32_t device)
     if (mMicMute) {
         return "MIC OFF";
     }
+
     switch (device) {
     case AudioSystem::DEVICE_IN_BUILTIN_MIC:
         return "Main Mic";
@@ -783,6 +784,7 @@ status_t AudioHardware::setInputSource_l(audio_source source)
 
      return NO_ERROR;
 }
+
 
 //------------------------------------------------------------------------------
 //  AudioStreamOutALSA
@@ -1035,6 +1037,7 @@ bool AudioHardware::AudioStreamOutALSA::checkStandby()
 status_t AudioHardware::AudioStreamOutALSA::setParameters(const String8& keyValuePairs)
 {
     AudioParameter param = AudioParameter(keyValuePairs);
+
     status_t status = NO_ERROR;
     int device;
     LOGD("AudioStreamOutALSA::setParameters() %s", keyValuePairs.string());
@@ -1046,19 +1049,20 @@ status_t AudioHardware::AudioStreamOutALSA::setParameters(const String8& keyValu
 
         if (param.getInt(String8(AudioParameter::keyRouting), device) == NO_ERROR)
         {
-        if (device != 0) {
-            AutoMutex hwLock(mHardware->lock());
+            if (device != 0) {
+                AutoMutex hwLock(mHardware->lock());
 
-            if (mDevices != (uint32_t)device) {
-                mDevices = (uint32_t)device;
-                if (mHardware->mode() != AudioSystem::MODE_IN_CALL) {
-                    doStandby_l();
+                if (mDevices != (uint32_t)device) {
+                    mDevices = (uint32_t)device;
+
+                    if (mHardware->mode() != AudioSystem::MODE_IN_CALL) {
+                        doStandby_l();
+                    }
+                }
+                if (mHardware->mode() == AudioSystem::MODE_IN_CALL) {
+                    mHardware->setIncallPath_l(device);
                 }
             }
-            if (mHardware->mode() == AudioSystem::MODE_IN_CALL) {
-                mHardware->setIncallPath_l(device);
-            }
-        }
             param.remove(String8(AudioParameter::keyRouting));
         }
     }
@@ -1067,9 +1071,7 @@ status_t AudioHardware::AudioStreamOutALSA::setParameters(const String8& keyValu
         status = BAD_VALUE;
     }
 
-
     return status;
-
 }
 
 String8 AudioHardware::AudioStreamOutALSA::getParameters(const String8& keys)
@@ -1280,6 +1282,7 @@ ssize_t AudioHardware::AudioStreamInALSA::read(void* buffer, ssize_t bytes)
 Error:
 
     standby();
+
     // Simulate audio output timing in case of error
     usleep((((bytes * 1000) / frameSize()) * 1000) / sampleRate());
 
@@ -1364,14 +1367,15 @@ status_t AudioHardware::AudioStreamInALSA::open_l()
     }
 
     if (mHardware->mode() != AudioSystem::MODE_IN_CALL) {
-    const char *route = mHardware->getInputRouteFromDevice(mDevices);
-    LOGV("read() wakeup setting route %s", route);
-    if (mRouteCtl) {
-        TRACE_DRIVER_IN(DRV_MIXER_SEL)
-        mixer_ctl_select(mRouteCtl, route);
-        TRACE_DRIVER_OUT
+        const char *route = mHardware->getInputRouteFromDevice(mDevices);
+        LOGV("read() wakeup setting route %s", route);
+        if (mRouteCtl) {
+            TRACE_DRIVER_IN(DRV_MIXER_SEL)
+            mixer_ctl_select(mRouteCtl, route);
+            TRACE_DRIVER_OUT
+        }
     }
-}
+
     return NO_ERROR;
 }
 
@@ -1696,6 +1700,7 @@ void resample_441_320(int16_t* input, int16_t* output, int* num_samples_in, int*
             const int32_t s2 = tmp[whole + 1];
             *output++ = clip(s1 + (((s2 - s1) * (int32_t)frac) >> 15));
         }
+
     }
 
     const int samples_consumed = num_blocks * RESAMPLE_16KHZ_SAMPLES_IN;
