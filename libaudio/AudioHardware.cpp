@@ -491,19 +491,6 @@ status_t AudioHardware::setMasterVolume(float volume)
     // volume on top of the maximum volume that we set through the SND API.
     // return error - software mixer will handle it
 
-    if (mMixer != NULL) {
-        LOGV("setMasterVolume() getting Playback Spkr Volume control.");
-        TRACE_DRIVER_IN(DRV_MIXER_GET)
-        struct mixer_ctl *ctl= mixer_get_control(mMixer, "Playback Spkr Volume", 0);
-        TRACE_DRIVER_OUT
-        if (ctl != NULL) {
-            LOGV("setMasterVolume() set Playback Spkr Volume to %f", volume);
-            TRACE_DRIVER_IN(DRV_MIXER_SET)
-            mixer_ctl_set(ctl, volume * 100);
-            TRACE_DRIVER_OUT
-            return NO_ERROR;
-        }
-    }
     return -1;
 }
 
