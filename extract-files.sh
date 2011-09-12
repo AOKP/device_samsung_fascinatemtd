@@ -31,12 +31,10 @@ adb pull /system/vendor/bin/gpsd ../../../vendor/$MANUFACTURER/$DEVICE/proprieta
 adb pull /system/vendor/etc/gps.xml ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
 adb pull /system/etc/gps.conf ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
 adb pull /system/lib/libsamsungcamera.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary/libcamera.so
-adb pull /system/lib/libms3c_yamaha.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
-adb pull /system/lib/libsensor_yamaha.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
-adb pull /system/lib/libsensor_yamaha_test.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
-adb pull /system/bin/sensorcalibutil_yamaha ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
-adb pull /system/bin/sensorserver_yamaha ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
-adb pull /system/bin/sensorstatutil_yamaha ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
+adb pull /system/vendor/lib/libsensorservice.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
+adb pull /system/vendor/lib/libsensor_yamaha_test.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
+adb pull /system/vendor/bin/geomagneticd ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
+adb pull /system/vendor/bin/orientationd ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
 adb pull /system/lib/hw/sensors.default.so ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
 adb pull /system/app/PhoneConfig.apk ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
 adb pull /system/app/ProgramMenu.apk ../../../vendor/$MANUFACTURER/$DEVICE/proprietary
@@ -148,12 +146,10 @@ PRODUCT_COPY_FILES += \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/gps.xml:system/vendor/etc/gps.xml \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/gps.conf:system/etc/gps.conf \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/libcamera.so:system/lib/libsamsungcamera.so \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libms3c_yamaha.so:system/lib/libms3c_yamaha.so \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsensor_yamaha.so:system/lib/libsensor_yamaha.so \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsensor_yamaha_test.so:system/lib/libsensor_yamaha_test.so \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/sensorcalibutil_yamaha:system/bin/sensorcalibutil_yamaha \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/sensorserver_yamaha:system/bin/sensorserver_yamaha \\
-    vendor/__MANUFACTURER__/__DEVICE__/proprietary/sensorstatutil_yamaha:system/bin/sensorstatutil_yamaha \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsensorservice.so:system/vendor/lib/libsensorservice.so \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/libsensor_yamaha_test.so:system/vendor/lib/libsensor_yamaha_test.so \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/geomagneticd:system/vendor/bin/geomagneticd \\
+    vendor/__MANUFACTURER__/__DEVICE__/proprietary/orientationd:system/vendor/bin/orientationd \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/sensors.default.so:system/lib/hw/sensors.default.so \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/PhoneConfig.apk:system/app/PhoneConfig.apk \\
     vendor/__MANUFACTURER__/__DEVICE__/proprietary/ProgramMenu.apk:system/app/ProgramMenu.apk \\
