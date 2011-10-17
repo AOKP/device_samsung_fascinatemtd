@@ -4,7 +4,6 @@ on boot
 # Backwards Compat - XXX: Going away in G*
     symlink /system/etc /etc
     symlink /mnt/sdcard /sdcard
-    symlink /mnt/emmc /emmc
 
 # Include extra init file
     import /system/etc/init.local.rc
@@ -119,6 +118,7 @@ on boot
 on fs
     mkdir /radio 0775 radio radio
     mount yaffs2 mtd@system /system
+    mount yaffs2 mtd@system /system ro remount
     mount yaffs2 mtd@cache /cache
     mount yaffs2 mtd@radio /radio
     mount ext4 /dev/block/mmcblk0p1 /data wait nosuid nodev noatime nodiratime noauto_da_alloc
@@ -415,8 +415,7 @@ on property:ril.cdma.data_ready=true
 on property:ril.cdma.data_ready=false
     stop pppd_cdma
 
-service gps-daemon /system/vendor/bin/gpsd -c /vendor/etc/gps.xml
-    socket gps seqpacket 0660 gps system
-    user gps
+service gps-daemon /system/vendor/bin/gpsd
+    user system
     group system inet
 
