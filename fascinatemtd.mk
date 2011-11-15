@@ -48,6 +48,7 @@ PRODUCT_COPY_FILES := \
 
 # Init files
 PRODUCT_COPY_FILES += \
+	device/samsung/fascinatemtd/init.rc:root/init.rc \
 	device/samsung/fascinatemtd/init.aries.rc:root/init.aries.rc \
 	device/samsung/aries-common/lpm.rc:root/lpm.rc \
 	device/samsung/fascinatemtd/ueventd.aries.rc:root/ueventd.aries.rc \
@@ -66,40 +67,9 @@ PRODUCT_PACKAGES := \
        cypress-touchkey.kcm \
        s3c-keypad.kcm
 
-# Filesystem management tools
-PRODUCT_PACKAGES += \
-	make_ext4fs \
-	setup_fs
-
-# These are the OpenMAX IL configuration files
-PRODUCT_COPY_FILES += \
-	device/samsung/aries-common/sec_mm/sec_omx/sec_omx_core/secomxregistry:system/etc/secomxregistry
-
-# These are the OpenMAX IL modules
-PRODUCT_PACKAGES += \
-	libSEC_OMX_Core.aries \
-	libOMX.SEC.AVC.Decoder.aries \
-	libOMX.SEC.M4V.Decoder.aries \
-	libOMX.SEC.M4V.Encoder.aries \
-	libOMX.SEC.AVC.Encoder.aries
-
 # Misc other modules
 PRODUCT_PACKAGES += \
-	lights.aries \
-	overlay.aries
-
-# Libs
-PRODUCT_PACKAGES += \
-	libcamera \
-	libstagefrighthw
-
-# Bluetooth MAC Address
-PRODUCT_PACKAGES += \
-	bdaddr_read
-
-# Device-specific packages
-PRODUCT_PACKAGES += \
-	AriesParts
+	lights.aries
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \

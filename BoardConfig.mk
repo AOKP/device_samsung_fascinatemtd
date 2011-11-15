@@ -36,6 +36,7 @@ TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 
 TARGET_PROVIDES_INIT := true
+TARGET_PROVIDES_INIT_TARGET_RC := true
 TARGET_BOARD_PLATFORM := s5pv210
 TARGET_BOOTLOADER_BOARD_NAME := aries
 TARGET_RECOVERY_INITRC := device/samsung/aries-common/recovery.rc
@@ -45,12 +46,12 @@ TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := ./device/samsung/fascinatemtd/relea
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./device/samsung/fascinatemtd/releasetools/fascinatemtd_img_from_target_files
 
 # Camera
-USE_CAMERA_STUB := false
+USE_CAMERA_STUB := true
 ifeq ($(USE_CAMERA_STUB),false)
 BOARD_CAMERA_LIBRARIES := libcamera
 endif
 
-TARGET_PROVIDES_LIBAUDIO := true
+BOARD_USES_GENERIC_AUDIO := true
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -98,6 +99,6 @@ BOARD_CUSTOM_BOOTIMG_MK := device/samsung/aries-common/shbootimg.mk
 TARGET_RECOVERY_PRE_COMMAND := "echo 1 > /cache/.startrecovery; sync;"
 
 # Include aries specific stuff
--include device/samsung/aries-common/Android.mk
+#-include device/samsung/aries-common/Android.mk
 
 TARGET_OTA_ASSERT_DEVICE := aries,fascinate,fascinatemtd,SCH-I500
