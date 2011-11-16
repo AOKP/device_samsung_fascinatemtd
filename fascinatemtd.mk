@@ -71,6 +71,11 @@ PRODUCT_PACKAGES := \
 PRODUCT_PACKAGES += \
 	lights.aries
 
+PRODUCT_PACKAGES += \
+	audio.a2dp.default \
+	libaudioutils \
+	libtinyalsa
+
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
 	frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
@@ -95,7 +100,6 @@ PRODUCT_PROPERTY_OVERRIDES := \
 PRODUCT_PROPERTY_OVERRIDES += \
        ro.telephony.default_network=4 \
        ro.ril.def.agps.mode=2 \
-       ro.ril.samsung_cdma=true \
        ro.cdma.home.operator.numeric=310004 \
        ro.cdma.home.operator.alpha=Verizon \
        ro.cdma.homesystem=64,65,76,77,78,79,80,81,82,83 \
@@ -111,7 +115,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
        net.cdma.ppp.interface=ppp0 \
        net.connectivity.type=CDMA1 \
        net.interfaces.defaultroute=cdma \
-       ro.telephony.ril_class=samsung \
        mobiledata.interfaces=pdp0,eth0,gprs,ppp0
 
 # These are the hardware-specific settings that are stored in system properties.
