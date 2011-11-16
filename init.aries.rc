@@ -13,7 +13,6 @@ on boot
     setprop ro.build.product aries
     setprop ro.product.device aries
     setprop ro.radio.noril yes
-    setprop ro.bt.bdaddr_path "/efs/bluetooth/bt_addr"
 
 # fake some battery state
     setprop status.battery.state Slow
@@ -115,20 +114,10 @@ on boot
     chmod 660 /sys/class/sec/gps/GPS_PWR_EN/value
 
 on fs
-    mkdir /radio 0775 radio radio
-    mount yaffs2 mtd@radio /radio
     mount ext4 /dev/block/mmcblk0p1 /data wait nosuid nodev noatime nodiratime noauto_da_alloc
     mount yaffs2 mtd@datadata /datadata
 
-# We chown/chmod /efs because mount is run as root + defaults
-    mkdir /efs 0775 radio radio
-    mount yaffs2 /dev/block/mtdblock4 /efs
-    chown radio radio /efs
-    chmod 770 /efs/bluetooth
-    chmod 770 /efs/imei
-
 # permissions for bluetooth.
-    chown bluetooth bluetooth /efs/bluetooth
     chown bluetooth bluetooth ro.bt.bdaddr_path
     chown bluetooth bluetooth /dev/s3c2410_serial0
     chmod 0600 /dev/s3c2410_serial0
