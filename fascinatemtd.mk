@@ -44,20 +44,20 @@ DEVICE_PACKAGE_OVERLAYS := device/samsung/fascinatemtd/overlay
 PRODUCT_COPY_FILES := \
 	device/samsung/fascinatemtd/asound.conf:system/etc/asound.conf \
 	device/samsung/fascinatemtd/vold.fstab:system/etc/vold.fstab \
-	device/samsung/aries-common/egl.cfg:system/lib/egl/egl.cfg
+	device/samsung/fascinatemtd/egl.cfg:system/lib/egl/egl.cfg
 
 # Init files
 PRODUCT_COPY_FILES += \
 	device/samsung/fascinatemtd/init.rc:root/init.rc \
 	device/samsung/fascinatemtd/init.aries.rc:root/init.aries.rc \
-	device/samsung/aries-common/lpm.rc:root/lpm.rc \
+	device/samsung/fascinatemtd/lpm.rc:root/lpm.rc \
 	device/samsung/fascinatemtd/ueventd.aries.rc:root/ueventd.aries.rc \
-	device/samsung/aries-common/setupenv.sh:recovery/root/sbin/setupenv.sh
+	device/samsung/fascinatemtd/setupenv.sh:recovery/root/sbin/setupenv.sh
 
 
 # Prebuilt kl keymaps
 PRODUCT_COPY_FILES += \
-	device/samsung/aries-common/cypress-touchkey.kl:system/usr/keylayout/cypress-touchkey.kl \
+	device/samsung/fascinatemtd/cypress-touchkey.kl:system/usr/keylayout/cypress-touchkey.kl \
 	device/samsung/fascinatemtd/sec_jack.kl:system/usr/keylayout/sec_jack.kl \
 	device/samsung/fascinatemtd/aries-keypad.kl:system/usr/keylayout/aries-keypad.kl \
 	device/samsung/fascinatemtd/s3c-keypad.kl:system/usr/keylayout/s3c-keypad.kl
@@ -158,7 +158,7 @@ PRODUCT_COPY_FILES += \
     device/samsung/fascinatemtd/recovery.bin:recovery.bin
 
 PRODUCT_COPY_FILES += \
-    device/samsung/aries-common/updater_cdma.sh:updater.sh
+    device/samsung/fascinatemtd/updater.sh:updater.sh
 
 # See comment at the top of this file. This is where the other
 # half of the device-specific product definition file takes care
