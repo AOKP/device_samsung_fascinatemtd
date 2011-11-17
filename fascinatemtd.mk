@@ -74,7 +74,8 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	audio.a2dp.default \
 	libaudioutils \
-	libtinyalsa
+	libtinyalsa \
+	ash
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
