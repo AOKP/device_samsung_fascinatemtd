@@ -77,6 +77,10 @@ PRODUCT_PACKAGES += \
 	libtinyalsa \
 	ash
 
+# wifi
+PRODUCT_COPY_FILES += \
+	device/samsung/fascinatemtd/prebuilt/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
+
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
 	frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
