@@ -72,10 +72,9 @@ PRODUCT_PACKAGES += \
 	lights.aries
 
 PRODUCT_PACKAGES += \
-	audio.a2dp.default \
-	libaudioutils \
-	libtinyalsa \
-	ash
+	ash \
+	audio.primary.aries \
+	audio_policy.aries
 
 # wifi
 PRODUCT_COPY_FILES += \
