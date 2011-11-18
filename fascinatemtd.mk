@@ -80,6 +80,10 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
 	device/samsung/fascinatemtd/prebuilt/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
 
+# apns
+PRODUCT_COPY_FILES += \
+        device/samsung/fascinate/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml
+
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
 	frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
@@ -119,7 +123,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
        net.cdma.ppp.interface=ppp0 \
        net.connectivity.type=CDMA1 \
        net.interfaces.defaultroute=cdma \
-       mobiledata.interfaces=pdp0,eth0,gprs,ppp0 \
+       mobiledata.interfaces=ppp0 \
        ro.ril.samsung_cdma=true \
        ro.telephony.ril_class=samsung
 
