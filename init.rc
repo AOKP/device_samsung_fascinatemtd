@@ -94,6 +94,10 @@ loglevel 3
     # 5.0 %
     write /dev/cpuctl/bg_non_interactive/cpu.shares 52
 
+# Allow everybody to read the xt_qtaguid resource tracking misc dev.
+# This is needed by any process that uses socket tagging.
+    chmod 0644 /dev/xt_qtaguid
+
 on fs
 # mount mtd partitions
     # Mount /system rw first to give the filesystem a chance to save a checkpoint
@@ -307,6 +311,8 @@ on boot
 # Run sysinit
     exec /system/bin/sysinit
 
+    class_start core
+    class_start main
     class_start default
 
 ## Daemon processes to be run by init.
@@ -365,6 +371,11 @@ service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-sys
     onrestart write /sys/power/state on
     onrestart restart media
     onrestart restart netd
+
+service drm /system/bin/drmserver
+    class main
+    user drm
+    group system inet drmrpc
 
 service media /system/bin/mediaserver
     user media

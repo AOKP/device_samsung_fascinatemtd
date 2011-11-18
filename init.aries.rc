@@ -151,25 +151,30 @@ on post-fs
 
 # 3D init
 service pvrsrvinit /system/vendor/bin/pvrsrvinit
+    class core
     user root
     group root
     oneshot
 
 service wpa_supplicant /system/bin/wpa_supplicant -Dwext -ieth0 -c/data/misc/wifi/wpa_supplicant.conf
+    class main
     socket wpa_eth0 dgram 0660 wifi wifi
     disabled
     oneshot
 
 service dhcpcd_eth0 /system/bin/dhcpcd -ABKL
+    class main
     disabled
     oneshot
 
 service iprenew_eth0 /system/bin/dhcpcd -n
+    class main
     disabled
     oneshot
 
 service hciattach /system/bin/brcm_patchram_plus --enable_hci --enable_lpm \
     --baudrate 3000000 --patchram /vendor/firmware/bcm4329.hcd /dev/s3c2410_serial0
+    class main
     user bluetooth
     group bluetooth net_bt_admin
     disabled
@@ -177,25 +182,25 @@ service hciattach /system/bin/brcm_patchram_plus --enable_hci --enable_lpm \
 
 # bugreport is triggered by holding down volume down, volume up and power
 service bugreport /system/bin/dumpstate -d -v -o /sdcard/bugreports/bugreport
+    class main
     disabled
     oneshot
     keycodes 114 115 116
     
 service pppd_cdma /system/bin/pppd_runner
+    class main
     user root
     group radio cache inet misc system
     disabled
     oneshot
 
-service tvout /system/bin/tvoutserver
-    user system
-    group graphics
-
 service orientationd /system/vendor/bin/orientationd
+    class main
     user compass
     group system input
 
 service geomagneticd /system/vendor/bin/geomagneticd
+    class main
     user compass
     group system input
 
@@ -206,6 +211,7 @@ on property:ril.cdma.data_ready=false
     stop pppd_cdma
 
 service gps-daemon /system/vendor/bin/gpsd
+    class main
     user system
     group system inet
 
