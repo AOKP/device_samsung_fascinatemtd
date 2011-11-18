@@ -119,7 +119,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
        net.cdma.ppp.interface=ppp0 \
        net.connectivity.type=CDMA1 \
        net.interfaces.defaultroute=cdma \
-       mobiledata.interfaces=pdp0,eth0,gprs,ppp0
+       mobiledata.interfaces=pdp0,eth0,gprs,ppp0 \
+       ro.ril.samsung_cdma=true \
+       ro.telephony.ril_class=samsung
 
 # These are the hardware-specific settings that are stored in system properties.
 # Note that the only such settings should be the ones that are too low-level to
