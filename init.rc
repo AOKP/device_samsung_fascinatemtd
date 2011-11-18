@@ -318,9 +318,11 @@ on boot
 ## Daemon processes to be run by init.
 ##
 service ueventd /sbin/ueventd
+    class core
     critical
 
 service console /system/bin/sh
+    class core
     console
     disabled
     user shell
@@ -331,6 +333,7 @@ on property:ro.secure=0
 
 # adbd is controlled by the persist.service.adb.enable system property
 service adbd /sbin/adbd
+    class core
     disabled
 
 # adbd on at boot in emulator
@@ -344,28 +347,34 @@ on property:persist.service.adb.enable=0
     stop adbd
 
 service servicemanager /system/bin/servicemanager
+    class core
     user system
     critical
     onrestart restart zygote
     onrestart restart media
 
 service vold /system/bin/vold
+    class core
     socket vold stream 0660 root mount
     ioprio be 2
 
 service netd /system/bin/netd
+    class main
     socket netd stream 0660 root system
     socket dnsproxyd stream 0660 root inet
 
 service debuggerd /system/bin/debuggerd
+    class main
 
 service ril-daemon /system/bin/rild
+    class main
     socket rild stream 660 root radio
     socket rild-debug stream 660 radio system
     user root
-    group radio cache inet misc audio sdcard_rw net_admin net_raw qcom_oncrpc diag
+    group radio cache inet misc audio sdcard_rw net_admin net_raw qcom_oncrpc diag log
 
 service zygote /system/bin/app_process -Xzygote /system/bin --zygote --start-system-server
+    class main
     socket zygote stream 666
     onrestart write /sys/android_power/request_state wake
     onrestart write /sys/power/state on
@@ -378,22 +387,26 @@ service drm /system/bin/drmserver
     group system inet drmrpc
 
 service media /system/bin/mediaserver
+    class main
     user media
     group system audio camera graphics inet net_bt net_bt_admin net_raw
     ioprio rt 4
 
 service bootanim /system/bin/bootanimation
+    class main
     user graphics
     group graphics
     disabled
     oneshot
 
 service dbus /system/bin/dbus-daemon --system --nofork
+    class main
     socket dbus stream 660 bluetooth bluetooth
     user bluetooth
     group bluetooth net_bt_admin
 
 service bluetoothd /system/bin/bluetoothd -n
+    class main
     socket bluetooth stream 660 bluetooth bluetooth
     socket dbus_bluetooth stream 660 bluetooth bluetooth
     # init.rc does not yet support applying capabilities, so run as root and
@@ -401,34 +414,12 @@ service bluetoothd /system/bin/bluetoothd -n
     group bluetooth net_bt_admin misc
     disabled
 
-service hfag /system/bin/sdptool add --channel=10 HFAG
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
-
-service hsag /system/bin/sdptool add --channel=11 HSAG
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
-
-service opush /system/bin/sdptool add --channel=12 OPUSH
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
-
-service pbap /system/bin/sdptool add --channel=19 PBAP
-    user bluetooth
-    group bluetooth net_bt_admin
-    disabled
-    oneshot
-
 service installd /system/bin/installd
+    class main
     socket installd stream 600 system system
 
 service racoon /system/bin/racoon
+    class main
     socket racoon stream 600 system system
     # racoon will setuid to vpn after getting necessary resources.
     group net_admin
@@ -436,6 +427,7 @@ service racoon /system/bin/racoon
     oneshot
 
 service mtpd /system/bin/mtpd
+    class main
     socket mtpd stream 600 system system
     user vpn
     group vpn net_admin net_raw
@@ -443,11 +435,13 @@ service mtpd /system/bin/mtpd
     oneshot
 
 service keystore /system/bin/keystore /data/misc/keystore
+    class main
     user keystore
     group keystore
     socket keystore stream 666
 
 service dumpstate /system/bin/dumpstate -s
+    class main
     socket dumpstate stream 0660 shell log
     disabled
     oneshot
