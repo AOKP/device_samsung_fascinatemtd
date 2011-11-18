@@ -82,7 +82,7 @@ PRODUCT_COPY_FILES += \
 
 # apns
 PRODUCT_COPY_FILES += \
-        device/samsung/fascinate/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml
+        device/samsung/fascinatemtd/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
