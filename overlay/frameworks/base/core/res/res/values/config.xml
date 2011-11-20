@@ -78,4 +78,7 @@
     <!-- The default iface on which to monitor data use -->
     <string name="config_datause_iface">ppp0</string>
 
+    <!-- CRT Screen off animation -->
+    <bool name="config_animateScreenLights">false</bool>
+
 </resources>
