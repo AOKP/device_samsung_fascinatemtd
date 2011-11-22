@@ -45,6 +45,9 @@ TARGET_RECOVERY_INITRC := device/samsung/fascinatemtd/recovery.rc
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := ./device/samsung/fascinatemtd/releasetools/fascinatemtd_ota_from_target_files
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./device/samsung/fascinatemtd/releasetools/fascinatemtd_img_from_target_files
 
+# Hardware rendering
+USE_OPENGL_RENDERER := true
+
 # Camera
 USE_CAMERA_STUB := true
 ifeq ($(USE_CAMERA_STUB),false)
