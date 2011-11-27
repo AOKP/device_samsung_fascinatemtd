@@ -44,12 +44,15 @@ DEVICE_PACKAGE_OVERLAYS := device/samsung/fascinatemtd/overlay
 PRODUCT_COPY_FILES := \
 	device/samsung/fascinatemtd/asound.conf:system/etc/asound.conf \
 	device/samsung/fascinatemtd/vold.fstab:system/etc/vold.fstab \
-	device/samsung/fascinatemtd/egl.cfg:system/lib/egl/egl.cfg
+	device/samsung/fascinatemtd/egl.cfg:system/lib/egl/egl.cfg \
+	device/samsung/aries-common/mxt224_ts_input.idc:system/usr/idc/mxt224_ts_input.idc
 
 # Init files
 PRODUCT_COPY_FILES += \
 	device/samsung/fascinatemtd/init.rc:root/init.rc \
 	device/samsung/fascinatemtd/init.aries.rc:root/init.aries.rc \
+	device/samsung/aries-common/init.aries.usb.rc:root/init.aries.usb.rc \
+	device/samsung/aries-common/init.aries.usb.rc:recovery/root/usb.rc \
 	device/samsung/fascinatemtd/lpm.rc:root/lpm.rc \
 	device/samsung/fascinatemtd/ueventd.aries.rc:root/ueventd.aries.rc \
 	device/samsung/fascinatemtd/setupenv.sh:recovery/root/sbin/setupenv.sh
@@ -67,14 +70,38 @@ PRODUCT_PACKAGES := \
        cypress-touchkey.kcm \
        s3c-keypad.kcm
 
+# Filesystem management tools
+PRODUCT_PACKAGES += \
+	make_ext4fs \
+	setup_fs
+
+# These are the OpenMAX IL configuration files
+PRODUCT_COPY_FILES += \
+	device/samsung/aries-common/sec_mm/sec_omx/sec_omx_core/secomxregistry:system/etc/secomxregistry \
+	device/samsung/aries-common/media_profiles.xml:system/etc/media_profiles.xml
+
+# These are the OpenMAX IL modules
+PRODUCT_PACKAGES += \
+	libSEC_OMX_Core.aries \
+	libOMX.SEC.AVC.Decoder.aries \
+	libOMX.SEC.M4V.Decoder.aries \
+	libOMX.SEC.M4V.Encoder.aries \
+	libOMX.SEC.AVC.Encoder.aries
+
 # Misc other modules
 PRODUCT_PACKAGES += \
-	lights.aries
-
-PRODUCT_PACKAGES += \
-	ash \
+	lights.aries \
 	audio.primary.aries \
-	audio_policy.aries
+	audio_policy.aries \
+	libs3cjpeg
+
+# Libs
+PRODUCT_PACKAGES += \
+	libstagefrighthw
+
+# Device-specific packages
+PRODUCT_PACKAGES += \
+	AriesParts
 
 # wifi
 PRODUCT_COPY_FILES += \
@@ -125,7 +152,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
        net.interfaces.defaultroute=cdma \
        mobiledata.interfaces=ppp0 \
        ro.ril.samsung_cdma=true \
-       ro.telephony.ril_class=samsung
+       ro.telephony.ril_class=samsung \
+       ro.telephony.ril.v3=datacall
 
 # These are the hardware-specific settings that are stored in system properties.
 # Note that the only such settings should be the ones that are too low-level to
@@ -148,6 +176,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.kernel.android.checkjni=0 \
     dalvik.vm.checkjni=false
+
+# Set default USB interface
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    persist.sys.usb.config=mtp
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise

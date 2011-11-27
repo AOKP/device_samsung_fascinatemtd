@@ -41,6 +41,9 @@ TARGET_BOARD_PLATFORM := s5pv210
 TARGET_BOOTLOADER_BOARD_NAME := aries
 TARGET_RECOVERY_INITRC := device/samsung/fascinatemtd/recovery.rc
 
+BOARD_MOBILEDATA_INTERFACE_NAME = "ppp0"
+BOARD_UMS_LUNFILE := /sys/class/android_usb/android0/f_mass_storage/lun/file
+
 # Releasetools
 TARGET_RELEASETOOL_OTA_FROM_TARGET_SCRIPT := ./device/samsung/fascinatemtd/releasetools/fascinatemtd_ota_from_target_files
 TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./device/samsung/fascinatemtd/releasetools/fascinatemtd_img_from_target_files
@@ -49,12 +52,12 @@ TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./device/samsung/fascinatemtd/relea
 USE_OPENGL_RENDERER := true
 
 # Camera
-USE_CAMERA_STUB := true
+USE_CAMERA_STUB := false
 ifeq ($(USE_CAMERA_STUB),false)
 BOARD_CAMERA_LIBRARIES := libcamera
 endif
 
-BOARD_USES_GENERIC_AUDIO := true
+TARGET_PROVIDES_LIBAUDIO := true
 
 # Bluetooth
 BOARD_HAVE_BLUETOOTH := true
@@ -64,11 +67,6 @@ BOARD_HAVE_BLUETOOTH_BCM := true
 BOARD_USES_OVERLAY := true
 BOARD_V4L2_DEVICE := /dev/video1
 BOARD_CAMERA_DEVICE := /dev/video0
-#BOARD_SECOND_CAMERA_DEVICE := /dev/video2
-
-# FM Radio
-#BOARD_HAVE_FM_RADIO := true
-#BOARD_GLOBAL_CFLAGS += -DHAVE_FM_RADIO
 
 BOARD_NAND_PAGE_SIZE := 4096 -s 128
 BOARD_KERNEL_BASE := 0x32000000
@@ -98,6 +96,7 @@ BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 # Recovery
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_HAS_NO_SELECT_BUTTON := true
+BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/aries-common/recovery/graphics.c
 BOARD_USES_BML_OVER_MTD := true
 BOARD_CUSTOM_BOOTIMG_MK := device/samsung/fascinatemtd/shbootimg.mk
 TARGET_RECOVERY_PRE_COMMAND := "echo 1 > /cache/.startrecovery; sync;"
