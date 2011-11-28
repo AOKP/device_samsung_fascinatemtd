@@ -44,26 +44,25 @@ DEVICE_PACKAGE_OVERLAYS := device/samsung/fascinatemtd/overlay
 PRODUCT_COPY_FILES := \
 	device/samsung/fascinatemtd/asound.conf:system/etc/asound.conf \
 	device/samsung/fascinatemtd/vold.fstab:system/etc/vold.fstab \
-	device/samsung/fascinatemtd/egl.cfg:system/lib/egl/egl.cfg \
+	device/samsung/aries-common/egl.cfg:system/lib/egl/egl.cfg \
 	device/samsung/aries-common/mxt224_ts_input.idc:system/usr/idc/mxt224_ts_input.idc
 
 # Init files
 PRODUCT_COPY_FILES += \
-	device/samsung/fascinatemtd/init.rc:root/init.rc \
 	device/samsung/fascinatemtd/init.aries.rc:root/init.aries.rc \
 	device/samsung/aries-common/init.aries.usb.rc:root/init.aries.usb.rc \
 	device/samsung/aries-common/init.aries.usb.rc:recovery/root/usb.rc \
-	device/samsung/fascinatemtd/lpm.rc:root/lpm.rc \
+	device/samsung/aries-common/lpm.rc:root/lpm.rc \
 	device/samsung/fascinatemtd/ueventd.aries.rc:root/ueventd.aries.rc \
-	device/samsung/fascinatemtd/setupenv.sh:recovery/root/sbin/setupenv.sh
+	device/samsung/aries-common/setupenv.sh:recovery/root/sbin/setupenv.sh
 
 
 # Prebuilt kl keymaps
 PRODUCT_COPY_FILES += \
-	device/samsung/fascinatemtd/cypress-touchkey.kl:system/usr/keylayout/cypress-touchkey.kl \
-	device/samsung/fascinatemtd/sec_jack.kl:system/usr/keylayout/sec_jack.kl \
+	device/samsung/aries-common/cypress-touchkey.kl:system/usr/keylayout/cypress-touchkey.kl \
+	device/samsung/aries-common/sec_jack.kl:system/usr/keylayout/sec_jack.kl \
 	device/samsung/fascinatemtd/aries-keypad.kl:system/usr/keylayout/aries-keypad.kl \
-	device/samsung/fascinatemtd/s3c-keypad.kl:system/usr/keylayout/s3c-keypad.kl
+	device/samsung/aries-common/s3c-keypad.kl:system/usr/keylayout/s3c-keypad.kl
 
 # Generated kcm keymaps
 PRODUCT_PACKAGES := \
@@ -93,6 +92,7 @@ PRODUCT_PACKAGES += \
 	lights.aries \
 	audio.primary.aries \
 	audio_policy.aries \
+	audio.a2dp.default \
 	libs3cjpeg
 
 # Libs
@@ -103,19 +103,14 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES += \
 	AriesParts
 
-# wifi
-PRODUCT_COPY_FILES += \
-	device/samsung/fascinatemtd/prebuilt/etc/wifi/wpa_supplicant.conf:system/etc/wifi/wpa_supplicant.conf
-
 # apns
 PRODUCT_COPY_FILES += \
-        device/samsung/fascinatemtd/prebuilt/etc/apns-conf.xml:system/etc/apns-conf.xml
+	development/data/etc/apns-conf.xml:system/etc/apns-conf.xml
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
 	frameworks/base/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
 	frameworks/base/data/etc/android.hardware.camera.flash-autofocus.xml:system/etc/permissions/android.hardware.camera.flash-autofocus.xml \
-	frameworks/base/data/etc/android.hardware.camera.front.xml:system/etc/permissions/android.hardware.camera.front.xml \
 	frameworks/base/data/etc/android.hardware.telephony.cdma.xml:system/etc/permissions/android.hardware.telephony.cdma.xml \
         frameworks/base/data/etc/android.hardware.location.xml:system/etc/permissions/android.hardware.location.xml \
 	frameworks/base/data/etc/android.hardware.location.gps.xml:system/etc/permissions/android.hardware.location.gps.xml \
@@ -200,7 +195,7 @@ PRODUCT_COPY_FILES += \
     device/samsung/fascinatemtd/recovery.bin:recovery.bin
 
 PRODUCT_COPY_FILES += \
-    device/samsung/fascinatemtd/updater.sh:updater.sh
+    device/samsung/aries-common/updater.sh:updater.sh
 
 # See comment at the top of this file. This is where the other
 # half of the device-specific product definition file takes care

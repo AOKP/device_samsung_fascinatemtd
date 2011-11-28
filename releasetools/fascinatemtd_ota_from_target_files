@@ -76,7 +76,9 @@ def WriteFullOTAPackage(input_zip, output_zip):
 
   AppendAssertions(script, input_zip)
   device_specific.FullOTA_Assertions()
-  script.ShowProgress(0.5, 0)
+
+  if OPTIONS.backuptool:
+    script.RunBackup("backup")
 
   if OPTIONS.wipe_user_data:
     script.FormatPartition("/data")
@@ -102,7 +104,9 @@ def WriteFullOTAPackage(input_zip, output_zip):
   CopyBootFiles(input_zip, output_zip)
   CopyBMLoverMTD(output_zip)
 
-  script.ShowProgress(0.1, 0)
+  script.WriteBMLoverMTD("boot", "72", "reservoir", "2004", "boot.img")
+  script.WriteBMLoverMTD("recovery", "102", "reservoir", "2004", "recovery.bin")
+
   device_specific.FullOTA_InstallEnd()
 
   if OPTIONS.extra_script is not None:
