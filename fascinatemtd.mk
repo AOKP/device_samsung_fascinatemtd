@@ -45,7 +45,8 @@ PRODUCT_COPY_FILES := \
 	device/samsung/fascinatemtd/asound.conf:system/etc/asound.conf \
 	device/samsung/fascinatemtd/vold.fstab:system/etc/vold.fstab \
 	device/samsung/aries-common/egl.cfg:system/lib/egl/egl.cfg \
-	device/samsung/aries-common/mxt224_ts_input.idc:system/usr/idc/mxt224_ts_input.idc
+	device/samsung/aries-common/mxt224_ts_input.idc:system/usr/idc/mxt224_ts_input.idc \
+	device/samsung/aries-common/main.conf:system/etc/bluetooth/main.conf
 
 # Init files
 PRODUCT_COPY_FILES += \
@@ -156,7 +157,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 PRODUCT_PROPERTY_OVERRIDES += \
        wifi.interface=eth0 \
        wifi.supplicant_scan_interval=20 \
-       dalvik.vm.heapsize=32m
+       dalvik.vm.heapsize=48m
 
 # enable Google-specific location features,
 # like NetworkLocationProvider and LocationCollector
@@ -175,6 +176,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
     persist.sys.usb.config=mtp
+
+# disable usb debugging notif
+PRODUCT_PROPERTY_OVERRIDES += \
+    persist.adb.notify=0
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise

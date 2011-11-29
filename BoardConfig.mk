@@ -40,7 +40,7 @@ TARGET_BOARD_PLATFORM := s5pv210
 TARGET_BOOTLOADER_BOARD_NAME := aries
 TARGET_RECOVERY_INITRC := device/samsung/aries-common/recovery.rc
 
-BOARD_MOBILEDATA_INTERFACE_NAME = "ppp0"
+BOARD_MOBILEDATA_INTERFACE_NAME := "ppp0"
 BOARD_UMS_LUNFILE := /sys/class/android_usb/android0/f_mass_storage/lun/file
 
 # Releasetools
