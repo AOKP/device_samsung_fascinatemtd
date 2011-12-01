@@ -55,8 +55,8 @@ PRODUCT_COPY_FILES += \
 	device/samsung/aries-common/init.aries.usb.rc:recovery/root/usb.rc \
 	device/samsung/aries-common/lpm.rc:root/lpm.rc \
 	device/samsung/fascinatemtd/ueventd.aries.rc:root/ueventd.aries.rc \
-	device/samsung/aries-common/setupdatadata.sh:root/sbin/setupdatadata.sh
-
+	device/samsung/aries-common/setupdatadata.sh:root/sbin/setupdatadata.sh \
+	bootable/recovery/nandroid-md5.sh:recovery/root/sbin/nandroid-md5.sh
 
 # Prebuilt kl keymaps
 PRODUCT_COPY_FILES += \
