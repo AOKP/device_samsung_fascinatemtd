@@ -104,9 +104,6 @@ def WriteFullOTAPackage(input_zip, output_zip):
   CopyBootFiles(input_zip, output_zip)
   CopyBMLoverMTD(output_zip)
 
-  script.WriteBMLoverMTD("boot", "72", "reservoir", "2004", "boot.img")
-  script.WriteBMLoverMTD("recovery", "102", "reservoir", "2004", "recovery.bin")
-
   device_specific.FullOTA_InstallEnd()
 
   if OPTIONS.extra_script is not None:
