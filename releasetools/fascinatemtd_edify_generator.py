@@ -28,9 +28,6 @@ class EdifyGenerator(edify_generator.EdifyGenerator):
       self.script.append('ui_print("Checking state of BML/MTD...");')
       self.script.append('show_progress(0.15, 5);');
       self.script.append(
-            ('package_extract_file("modem.bin", "/tmp/modem.bin");\n'
-             'set_perm(0, 0, 0777, "/tmp/modem.bin");'))
-      self.script.append(
             ('package_extract_file("updater.sh", "/tmp/updater.sh");\n'
              'set_perm(0, 0, 0777, "/tmp/updater.sh");'))
       self.script.append(

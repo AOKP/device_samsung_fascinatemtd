@@ -147,7 +147,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
        ro.config.vc_call_vol_steps=15 \
        ro.telephony.call_ring.multiple=false \
        ro.telephony.call_ring.delay=3000 \
-       ro.telephony.call_ring.absent=true \
        net.cdma.pppd.authtype=require-chap \
        net.cdma.pppd.user=user[SPACE]VerizonWireless \
        net.cdma.datalinkinterface=/dev/ttyCDMA0 \
@@ -204,8 +203,7 @@ else
 endif
 
 PRODUCT_COPY_FILES += \
-    $(LOCAL_KERNEL):kernel \
-    device/samsung/fascinatemtd/recovery.bin:recovery.bin
+    $(LOCAL_KERNEL):kernel
 
 PRODUCT_COPY_FILES += \
     device/samsung/aries-common/updater.sh:updater.sh
