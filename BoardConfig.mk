@@ -36,7 +36,7 @@ TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 
 TARGET_PROVIDES_INIT := true
-TARGET_BOARD_PLATFORM := s5pv210
+TARGET_BOARD_PLATFORM := s5pc110
 TARGET_BOOTLOADER_BOARD_NAME := aries
 TARGET_RECOVERY_INITRC := device/samsung/aries-common/recovery.rc
 
@@ -94,6 +94,7 @@ WIFI_DRIVER_FW_PATH_AP      := "/vendor/firmware/fw_bcmdhd_apsta.bin"
 
 # Vold
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
+TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/s3c-usbgadget/gadget/lun%d/file"
 
 # Recovery
 TARGET_USERIMAGES_USE_EXT4 := true

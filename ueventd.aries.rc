@@ -24,3 +24,8 @@
 /sys/devices/virtual/input/input* enable 0660 root input
 /sys/devices/virtual/input/input* poll_delay 0660 root input
 
+# TV Out
+/dev/video14              0660   system     graphics
+/dev/video21              0660   system     graphics
+/dev/video22              0660   system     graphics
+

@@ -142,6 +142,9 @@ on post-fs
     chown root input /dev/i2c-12
 
 on post-fs-data
+    # for migrating download provider's cache out of the small /data/data
+    mkdir /data/data2 0771 system system
+
     # setup datadata
     exec /sbin/setupdatadata.sh
 
@@ -254,4 +257,14 @@ service gps-daemon /system/vendor/bin/gpsd
     class late_start
     user system
     group system inet
+
+service tvout /system/bin/tvoutserver
+    class late_start
+    user system
+    group graphics
+
+service tvouthack /system/bin/tvouthack
+    user system
+    group graphics
+    disabled
 
