@@ -50,6 +50,9 @@ TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./device/samsung/fascinatemtd/relea
 # Hardware rendering
 USE_OPENGL_RENDERER := true
 
+# skia
+BOARD_USE_SKIA_LCDTEXT := true
+
 # Camera
 USE_CAMERA_STUB := false
 ifeq ($(USE_CAMERA_STUB),false)
