@@ -184,7 +184,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
-    persist.sys.usb.config=mtp
+    persist.sys.usb.config=mass_storage
 
 # disable usb debugging notif
 PRODUCT_PROPERTY_OVERRIDES += \
