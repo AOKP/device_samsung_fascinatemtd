@@ -157,7 +157,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
        net.interfaces.defaultroute=cdma \
        mobiledata.interfaces=ppp0 \
        ro.ril.samsung_cdma=true \
-       ro.telephony.ril_class=samsung \
+       ro.telephony.ril_class=SamsungRIL \
        ro.telephony.ril.v3=datacall
 
 # These are the hardware-specific settings that are stored in system properties.
@@ -185,6 +185,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Override /proc/sys/vm/dirty_ratio on UMS
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.vold.umsdirtyratio=20
+
+# We have sacrificed /cache for a larger /system, so it's not large enough for dalvik cache
+PRODUCT_PROPERTY_OVERRIDES += \
+    dalvik.vm.dexopt-data-only=1
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \

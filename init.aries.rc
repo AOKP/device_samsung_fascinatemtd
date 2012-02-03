@@ -242,10 +242,11 @@ service geomagneticd /system/vendor/bin/geomagneticd
     user compass
     group system input
 
-on property:ril.cdma.data_ready=true
+on property:ril.cdma.data_state=1
     start pppd_cdma
+	setprop ril.cdma.data_state 2
 
-on property:ril.cdma.data_ready=false
+on property:ril.cdma.data_state=0
     stop pppd_cdma
 
 service gps-daemon /system/vendor/bin/gpsd
