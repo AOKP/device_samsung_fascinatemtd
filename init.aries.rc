@@ -30,6 +30,13 @@ on boot
 
 # phone
     setprop ro.telephony.call_ring.multiple 0
+	
+
+on property:ril.cdma.data_state=1
+  restart pppd_cdma
+  
+on property:ril.cdma.data_state=0
+  stop pppd_cdma
 
 on fs
     mount ext4 /dev/block/mmcblk0p1 /data wait nosuid nodev noatime nodiratime noauto_da_alloc
@@ -241,13 +248,6 @@ service geomagneticd /system/vendor/bin/geomagneticd
     class late_start
     user compass
     group system input
-
-on property:ril.cdma.data_state=1
-    start pppd_cdma
-	setprop ril.cdma.data_state 2
-
-on property:ril.cdma.data_state=0
-    stop pppd_cdma
 
 service gps-daemon /system/vendor/bin/gpsd
     class late_start
