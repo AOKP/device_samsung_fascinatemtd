@@ -26,7 +26,7 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 $(call inherit-product, device/samsung/fascinatemtd/fascinatemtd.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full.mk)
 
-# Galaxy S uses high-density artwork where available
+# The SGS series is hdpi however with new development going toward xhdpi we need to inherit xhdpi or we will lose those pngs
 PRODUCT_AAPT_CONFIG := normal hdpi xhdpi
 PRODUCT_AAPT_PREF_CONFIG := xhdpi
 

@@ -100,6 +100,8 @@ def WriteFullOTAPackage(input_zip, output_zip):
   script.ShowProgress(0.15, 5)
   Item.Get("system").SetPermissions(script)
 
+  script.SetPermissionsRecursive("/system/etc/init.d", 0, 0, 0755, 0555)
+
   CopyBootFiles(input_zip, output_zip)
   CopyBMLoverMTD(output_zip)
 
