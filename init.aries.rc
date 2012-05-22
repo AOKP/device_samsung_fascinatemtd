@@ -187,6 +187,14 @@ service wpa_supplicant /system/bin/wpa_supplicant \
     disabled
     oneshot
 
+# Adb over Network
+on property:service.adb.tcp.port=5555
+    stop adbd
+    start adbd
+on property:service.adb.tcp.port=-1
+    stop adbd
+    start adbd
+
 service dhcpcd_wlan0 /system/bin/dhcpcd -ABKL
     class main
     disabled
