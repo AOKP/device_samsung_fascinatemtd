@@ -113,6 +113,10 @@ PRODUCT_PACKAGES += \
 	AriesParts \
 	tvouthack
 
+# Misc packages
+PRODUCT_PACKAGES += \
+	Torch
+
 # apns
 PRODUCT_COPY_FILES += \
 	development/data/etc/apns-conf.xml:system/etc/apns-conf.xml
@@ -166,7 +170,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # be reachable from resources or other mechanisms.
 PRODUCT_PROPERTY_OVERRIDES += \
        wifi.interface=wlan0 \
-       wifi.supplicant_scan_interval=20 \
        dalvik.vm.heapsize=48m
 
 # enable Google-specific location features,
@@ -201,20 +204,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # we have enough storage space to hold precise GC data
 PRODUCT_TAGS += dalvik.gc.type-precise
-
-# kernel modules
-PRODUCT_COPY_FILES += $(foreach module,\
-	$(wildcard device/samsung/fascinatemtd/*.ko),\
-	$(module):system/lib/modules/$(notdir $(module)))
-
-ifeq ($(TARGET_PREBUILT_KERNEL),)
-    LOCAL_KERNEL := device/samsung/fascinatemtd/kernel
-else
-    LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
-endif
-
-PRODUCT_COPY_FILES += \
-    $(LOCAL_KERNEL):kernel
 
 PRODUCT_COPY_FILES += \
     device/samsung/aries-common/updater.sh:updater.sh
