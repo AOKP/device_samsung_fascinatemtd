@@ -35,10 +35,11 @@
 # but not to the original vendor tree. Be sure to update both.
 
 
-# These is the hardware-specific overlay, which points to the location
+# These are the hardware-specific overlay, which points to the location
 # of hardware-specific resource overrides, typically the frameworks and
 # application settings that are stored in resourced.
-DEVICE_PACKAGE_OVERLAYS := device/samsung/fascinatemtd/overlay
+DEVICE_PACKAGE_OVERLAYS := device/samsung/fascinatemtd/overlay \
+    device/samsung/aries-common/overlay     
 
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES := \
