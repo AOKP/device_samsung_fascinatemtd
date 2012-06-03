@@ -19,4 +19,6 @@
 	<int name="aliasMaxChars">72</int>
 	<string name="httpParams">X-VzW-MDN: ##LINE1##</string>
 	<string	name="httpParamsLine1Key">##LINE1##</string>
+        <bool name="enableSplitSMS">true</bool>
+        <bool name="enableMultipartSMS">false</bool>
 </mms_config>

@@ -164,8 +164,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Note that the only such settings should be the ones that are too low-level to
 # be reachable from resources or other mechanisms.
 PRODUCT_PROPERTY_OVERRIDES += \
-       wifi.interface=wlan0 \
-       wifi.supplicant_scan_interval=180
+       wifi.interface=wlan0
 
 # Dalvik heap size
 include frameworks/base/build/phone-hdpi-512-dalvik-heap.mk
