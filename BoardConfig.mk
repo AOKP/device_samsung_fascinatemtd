@@ -103,6 +103,9 @@ WIFI_DRIVER_FW_PATH_AP      := "/vendor/firmware/fw_bcmdhd_apsta.bin"
 BOARD_VOLD_EMMC_SHARES_DEV_MAJOR := true
 TARGET_USE_CUSTOM_LUN_FILE_PATH := "/sys/devices/platform/s3c-usbgadget/gadget/lun%d/file"
 
+# Bootanimation
+TARGET_BOOTANIMATION_PRELOAD := true
+
 # Recovery
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_HAS_NO_SELECT_BUTTON := true
