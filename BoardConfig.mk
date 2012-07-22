@@ -48,6 +48,14 @@ TARGET_RELEASETOOL_IMG_FROM_TARGET_SCRIPT := ./device/samsung/fascinatemtd/relea
 # Hardware rendering
 USE_OPENGL_RENDERER := true
 
+# TARGET_DISABLE_TRIPLE_BUFFERING can be used to disable triple buffering
+# on per target basis. On crespo it is possible to do so in theory
+# to save memory, however, there are currently some limitations in the
+# OpenGL ES driver that in conjunction with disable triple-buffering
+# would hurt performance significantly (see b/6016711)
+TARGET_DISABLE_TRIPLE_BUFFERING := false
+BOARD_ALLOW_EGL_HIBERNATION := true
+
 # skia
 BOARD_USE_SKIA_LCDTEXT := true
 

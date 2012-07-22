@@ -2,7 +2,6 @@ ifeq ($(TARGET_DEVICE),fascinatemtd)
 
 LOCAL_PATH:= $(call my-dir)
 
-
 include $(CLEAR_VARS)
 LOCAL_SRC_FILES:= aplay.c alsa_pcm.c alsa_mixer.c
 LOCAL_MODULE:= aplay
@@ -51,10 +50,7 @@ LOCAL_MODULE:= audio_policy.aries
 LOCAL_MODULE_TAGS := optional
 LOCAL_STATIC_LIBRARIES := libmedia_helper
 LOCAL_WHOLE_STATIC_LIBRARIES:= libaudiopolicy_legacy
-LOCAL_SHARED_LIBRARIES:= libc libcutils libutils libmedia
-ifeq ($(BOARD_HAVE_BLUETOOTH),true)
-  LOCAL_CFLAGS += -DWITH_A2DP
-endif
+LOCAL_SHARED_LIBRARIES:= libc libcutils libutils
 include $(BUILD_SHARED_LIBRARY)
 
 endif
