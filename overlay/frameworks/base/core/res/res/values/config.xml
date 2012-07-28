@@ -48,5 +48,8 @@
         For example, a device with Home, Back and Menu keys would set this
         config to 7. -->	
 	<!-- <integer name="config_deviceHardwareKeys">15</integer> -->
-	
+
+     <!-- If this value is true, we handle Samsung CDMA's message ID method -->
+     <bool name="config_smsSamsungCdmaAlternateMessageIDEncoding">true</bool>
+
 </resources>
