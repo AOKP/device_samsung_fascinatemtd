@@ -38,8 +38,8 @@
 # These are the hardware-specific overlay, which points to the location
 # of hardware-specific resource overrides, typically the frameworks and
 # application settings that are stored in resourced.
-DEVICE_PACKAGE_OVERLAYS := device/samsung/fascinatemtd/overlay \
-    device/samsung/aries-common/overlay     
+DEVICE_PACKAGE_OVERLAYS := device/samsung/aries-common/overlay \
+	device/samsung/fascinatemtd/overlay
 
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES := \
@@ -66,6 +66,10 @@ PRODUCT_COPY_FILES += \
 # ppp
 PRODUCT_COPY_FILES += \
 	device/samsung/fascinatemtd/ip-up:system/etc/ppp/ip-up
+
+# gps
+PRODUCT_COPY_FILES += \
+	device/samsung/fascinatemtd/gpsfix:system/bin/gpsfix
 
 # Generated kcm keymaps
 PRODUCT_PACKAGES := \
@@ -117,12 +121,7 @@ PRODUCT_PACKAGES += \
 
 # Device-specific packages
 PRODUCT_PACKAGES += \
-	AriesParts \
-	tvouthack
-
-# Misc packages
-#PRODUCT_PACKAGES += \
-#	Torch
+	AriesParts
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
@@ -172,8 +171,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Note that the only such settings should be the ones that are too low-level to
 # be reachable from resources or other mechanisms.
 PRODUCT_PROPERTY_OVERRIDES += \
-       wifi.interface=wlan0 \
-       dalvik.vm.heapsize=48m
+       wifi.interface=wlan0
 
 # enable Google-specific location features,
 # like NetworkLocationProvider and LocationCollector
@@ -196,10 +194,6 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # enable repeatable keys in cwm
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.cwm.enable_key_repeat=true
-
-# We have sacrificed /cache for a larger /system, so it's not large enough for dalvik cache
-PRODUCT_PROPERTY_OVERRIDES += \
-    dalvik.vm.dexopt-data-only=1
 
 # Set default USB interface
 PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \

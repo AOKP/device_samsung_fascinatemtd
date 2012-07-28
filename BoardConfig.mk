@@ -118,6 +118,8 @@ BOARD_HAS_NO_SELECT_BUTTON := true
 BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/aries-common/recovery/graphics.c
 BOARD_USES_BML_OVER_MTD := true
 BOARD_CUSTOM_BOOTIMG_MK := device/samsung/fascinatemtd/shbootimg.mk
-TARGET_RECOVERY_PRE_COMMAND := "echo 1 > /cache/.startrecovery; sync;"
+
+# SkTextBox for libtvout
+BOARD_USES_SKTEXTBOX := true
 
 TARGET_OTA_ASSERT_DEVICE := aries,fascinate,fascinatemtd,SCH-I500
