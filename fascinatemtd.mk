@@ -36,6 +36,8 @@
 
 $(call inherit-product, device/samsung/fascinatemtd/device.mk)
 
+DEVICE_PACKAGE_OVERLAYS := device/samsung/fascinatemtd/overlay
+
 # Verizon cdma stuff
 PRODUCT_PROPERTY_OVERRIDES += \
        ro.cdma.home.operator.numeric=310004 \
