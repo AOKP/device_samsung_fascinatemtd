@@ -38,7 +38,6 @@
 # These are the hardware-specific overlay, which points to the location
 # of hardware-specific resource overrides, typically the frameworks and
 # application settings that are stored in resourced.
-DEVICE_PACKAGE_OVERLAYS := device/samsung/aries-common/overlay
 
 # These are the hardware-specific configuration files
 PRODUCT_COPY_FILES := \
@@ -52,7 +51,7 @@ PRODUCT_COPY_FILES += \
 	device/samsung/fascinatemtd/init.aries.rc:root/init.aries.rc \
 	device/samsung/aries-common/init.aries.usb.rc:root/init.aries.usb.rc \
 	device/samsung/aries-common/init.aries.usb.rc:recovery/root/usb.rc \
-	device/samsung/aries-common/lpm.rc:root/lpm.rc \
+	device/samsung/fascinatemtd/lpm.rc:root/lpm.rc \
 	device/samsung/fascinatemtd/ueventd.aries.rc:root/ueventd.aries.rc
 
 # Prebuilt kl keymaps
@@ -87,22 +86,22 @@ PRODUCT_PACKAGES += \
 
 # These are the OpenMAX IL configuration files
 PRODUCT_COPY_FILES += \
-	device/samsung/aries-common/sec_mm/sec_omx/sec_omx_core/secomxregistry:system/etc/secomxregistry \
+	hardware/samsung/exynos3/s5pc110/sec_mm/sec_omx/sec_omx_core/secomxregistry:system/etc/secomxregistry \
 	device/samsung/aries-common/media_profiles.xml:system/etc/media_profiles.xml \
 	device/samsung/aries-common/media_codecs.xml:system/etc/media_codecs.xml
 
 # These are the OpenMAX IL modules
 PRODUCT_PACKAGES += \
-	libSEC_OMX_Core.aries \
-	libOMX.SEC.AVC.Decoder.aries \
-	libOMX.SEC.M4V.Decoder.aries \
-	libOMX.SEC.M4V.Encoder.aries \
-	libOMX.SEC.AVC.Encoder.aries
+	libSEC_OMX_Core \
+	libOMX.SEC.AVC.Decoder \
+	libOMX.SEC.M4V.Decoder \
+	libOMX.SEC.M4V.Encoder \
+	libOMX.SEC.AVC.Encoder
 
 # Misc other modules
 PRODUCT_PACKAGES += \
 	lights.aries \
-	hwcomposer.aries \
+	hwcomposer.s5pc110 \
 	camera.aries \
 	audio.primary.aries \
 	audio_policy.aries \
@@ -203,4 +202,9 @@ PRODUCT_TAGS += dalvik.gc.type-precise
 PRODUCT_COPY_FILES += \
     device/samsung/aries-common/updater.sh:updater.sh
 
+# decoy recovery kernel
+PRODUCT_COPY_FILES += \
+    device/samsung/fascinatemtd/recovery_kernel:recovery_kernel
+
 $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4329/device-bcm.mk)
+
